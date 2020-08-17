@@ -177,18 +177,23 @@ table_baseline_normalised(todelete, :) = [];
 todelete = table_baseline_normalised.Wavelength > 700;
 table_baseline_normalised(todelete, :) = [];
 
-baselinesize = size(table_normalised);
+baselinesize = size(table_baseline);
 count_main = 1;
 
 %NORMALISE BASELINE
 for c2 = 1:(baselinesize(1,2) - 1);
-    D = table2array(table_normalised(:,count_main + 1));
+    D = table2array(table_baseline(:,count_main + 1));
     table_baseline_normalised(:,count_main + 1) = (array2table(D/max(D)));
     count_main = count_main + 1;
 end
 
 table_baseline.tableavg = mean(table_baseline{:,2:end},2);
 table_baseline_normalised.tableavg = mean(table_baseline_normalised{:,2:end},2);
+
+%APPEND LOOKUP INDEX WITH BASELINE
+E = size(table_index);
+table_index{E(1),1} = table_baseline;
+table_index{E(1),2} = table_baseline_normalised;
 
 %DEFINITIONS
 count_main = 1;
